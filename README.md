@@ -7,4 +7,4 @@
 - 2-4 days front end implementation
 
 ## Back end UML
-[![alt text](backend_plan.jpg)]
+![alt text](planning/backend_plan.jpg)
