@@ -13,3 +13,6 @@ class Player:
 
     def is_bankrupt(self):
         pass
+
+    def __repr__(self):
+        return f"Player(name={self.name}, money={self.money})"

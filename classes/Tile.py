@@ -8,3 +8,7 @@ class Tile:
 
     def is_owned(self):
         return bool(self.owner)
+    
+    def __repr__(self):
+        return f"Tile(name={self.name}, owner={self.owner}, colour={self.colour}, price={self.price}, type={self.type})"
+    
