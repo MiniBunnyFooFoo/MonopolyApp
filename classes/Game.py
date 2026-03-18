@@ -9,7 +9,7 @@ class Game:
         board_len = len(self.board.tiles)
         player_count = len(self.board.players)
         turn_count = 0
-        print(board_len)
+        # print(board_len)
         for roll in dice_rolls:
             player_no = turn_count % player_count
             
@@ -18,14 +18,22 @@ class Game:
             
             # increment player's position
             player.position += roll
-            print(player)
+            # print(player)
             if player.position >= board_len:
                 player.position %= board_len
-                print(f"new pos: {player.position}")
+                # print(f"new pos: {player.position}")
                 
             
             # buy property or pay rent
             tile = self.board.tiles[player.position]
+            print(tile)
+            
+            # Check for GO
+            if tile.type == "go":
+                player.change_money(2)
+                # print(f"PAYDAY BABY\nBalance: {player.money}")
+                continue
+
             
             # TODO: pay rent
             if tile.is_owned():
@@ -42,7 +50,7 @@ class Game:
                                 
             # TODO: buy property
             else:
-                pass
+                print("not implemented")
             
             # TODO: check bankruptcy for player
             
