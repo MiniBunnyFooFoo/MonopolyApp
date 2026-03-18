@@ -27,7 +27,13 @@ class Board:
             print("Failed to decode JSON: {e}")
 
     def owns_full_colour_set(self, player, colour):
-        pass
+        # TODO: Check functionality
+        # Check for matching pair within player's properties
+        p_count = 0
+        for property in player.properties:
+            if property.colour == colour: p_count += 1
+            
+        return p_count == 2
 
 if __name__ == "__main__":
     board = Board()

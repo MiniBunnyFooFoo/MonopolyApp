@@ -5,14 +5,12 @@ class Player:
         self.money = 16
         self.position = 0
 
-    def pay(self):
-        pass
-
-    def add_money(self, money):
-        pass
+    def change_money(self, money):
+        self.money += money
 
     def is_bankrupt(self):
-        pass
+        if self.money <= 0: return True
+        return False
 
     def __repr__(self):
-        return f"Player(name={self.name}, money={self.money})"
+        return f"Player(name={self.name}, money={self.money}, position={self.position}, properties={self.properties})"
