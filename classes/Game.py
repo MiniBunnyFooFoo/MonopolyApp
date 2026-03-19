@@ -6,10 +6,10 @@ class Game:
         self.board = Board()
     
     def run(self, dice_rolls):
+        # TODO: Reset the board
         board_len = len(self.board.tiles)
         player_count = len(self.board.players)
         turn_count = 0
-        # print(board_len)
         for roll in dice_rolls:
             player_no = turn_count % player_count
             
@@ -18,45 +18,48 @@ class Game:
             
             # increment player's position
             player.position += roll
-            # print(player)
             if player.position >= board_len:
                 player.position %= board_len
-                # print(f"new pos: {player.position}")
                 
             
             # buy property or pay rent
             tile = self.board.tiles[player.position]
-            print(tile)
+
             
             # Check for GO
             if tile.type == "go":
                 player.change_money(2)
-                # print(f"PAYDAY BABY\nBalance: {player.money}")
                 continue
 
             
-            # TODO: pay rent
-            if tile.is_owned():
+            # buy property
+            if not tile.is_owned():
+                tile.owner = player_no
+                player.properties.append(tile)
+                price = tile.price
+                player.change_money(-price)
+                                
+            # pay rent
+            elif tile.owner != player_no:
                 pay_id = tile.owner
                 paid_player = self.board.players[pay_id]
                 
                 rent = tile.price
                 
-                # check for double rent (see TODO)
+                # TODO: check for double rent (see TODO)
                 if self.board.owns_full_colour_set(paid_player, tile.colour): 
                     rent*=2
                 
-                
-                                
-            # TODO: buy property
-            else:
-                tile.owner = player_no
-                player.properties.append(tile)
-                price = tile.price
-                player.change_money(-price)
             
             # TODO: check bankruptcy for player
-            
+            if player.is_bankrupt():
+                break
+
+            # increment turn counter
+            turn_count += 1
+
+        # TODO: Finish simulation
+        print("game end")
     
 if __name__ == "__main__":
     try:
@@ -76,5 +79,5 @@ if __name__ == "__main__":
     # Rolls 1
     game.run(data1)
     
-    # Rolls 2
-    game.run(data2)
+    # # Rolls 2
+    # game.run(data2)
