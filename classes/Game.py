@@ -50,7 +50,10 @@ class Game:
                                 
             # TODO: buy property
             else:
-                print("not implemented")
+                tile.owner = player_no
+                player.properties.append(tile)
+                price = tile.price
+                player.change_money(-price)
             
             # TODO: check bankruptcy for player
             
