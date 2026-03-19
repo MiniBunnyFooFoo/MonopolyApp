@@ -11,6 +11,11 @@ class Player:
     def is_bankrupt(self):
         if self.money <= 0: return True
         return False
+    
+    def reset(self):
+        self.properties = []
+        self.money = 16
+        self.position = 0        
 
     def __repr__(self):
         return f"Player(name={self.name}, money={self.money}, position={self.position}, properties={self.properties})"

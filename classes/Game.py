@@ -6,7 +6,15 @@ class Game:
         self.board = Board()
     
     def run(self, dice_rolls):
-        # TODO: Reset the board
+        # Reset the board and players
+        for player in self.board.players:
+            player.reset()
+
+        for tile in self.board.tiles:
+            tile.reset()
+        
+        print(self.board.players)
+
         board_len = len(self.board.tiles)
         player_count = len(self.board.players)
         turn_count = 0
@@ -15,7 +23,7 @@ class Game:
             
             # set player's turn
             player = self.board.players[player_no]
-            print(f"Player {player_no}: {player.name}, rolled: {roll}")
+            print(f"\nPlayer {player_no}: {player.name}, rolled: {roll}")
             
             # increment player's position
             player.position += roll
@@ -52,7 +60,7 @@ class Game:
                 
                 rent = tile.price
                 
-                # TODO: check for double rent (see TODO)
+                # check for double rent
                 if self.board.owns_full_colour_set(paid_player, tile.colour): 
                     print(f"{paid_player.name}")
                     rent*=2
@@ -63,7 +71,7 @@ class Game:
                 print(f"{paid_player.name} + {rent} -> {paid_player.money}")
                 print(f"{player.name} - {rent} -> {player.money}")
 
-            # TODO: check bankruptcy for player
+            # check bankruptcy for player
             if player.is_bankrupt():
                 print("Someone's a broke boy")
                 break
@@ -71,18 +79,27 @@ class Game:
             # increment turn counter
             turn_count += 1
             print(player)
-            input("Turn done: ")
+            # input("Turn done: ")
 
-        # TODO: Finish simulation
+        # Finish simulation
         print("game end")
         print("============================== RESULTS =============================")
-        winning_money = -1
-        winners = []
-        for i in self.board.players:
-            if i.money >= winning_money:
-                winners.append(i)
         
-        print(f"WINNERS: {winners}")
+        winning_money = 0
+        winner_id = ""
+
+        # Calculate each player's net worth
+        for i in self.board.players:
+            money = i.money
+            for j in i.properties:
+                money += j.price
+                        
+            if money > winning_money:
+                winning_money = money
+                winner_id = i.name
+        
+        print(f"WINNER: {winner_id} with a net worth of {winning_money}")
+        print(f"\nOther Players\n{self.board.players}")
             
     
 if __name__ == "__main__":
@@ -104,4 +121,4 @@ if __name__ == "__main__":
     game.run(data1)
     
     # # Rolls 2
-    # game.run(data2)
+    game.run(data2)
