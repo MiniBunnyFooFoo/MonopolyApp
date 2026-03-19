@@ -15,20 +15,25 @@ class Game:
             
             # set player's turn
             player = self.board.players[player_no]
+            print(f"Player {player_no}: {player.name}, rolled: {roll}")
             
             # increment player's position
             player.position += roll
+
+            # Add money for passing go
             if player.position >= board_len:
+                player.change_money(1)      
                 player.position %= board_len
+                print(f"{player.name} + 1 -> {player.money}")
                 
             
             # buy property or pay rent
             tile = self.board.tiles[player.position]
+            print(tile)
 
             
             # Check for GO
             if tile.type == "go":
-                player.change_money(2)
                 continue
 
             
@@ -38,6 +43,7 @@ class Game:
                 player.properties.append(tile)
                 price = tile.price
                 player.change_money(-price)
+                print(f"{player.name} bought {tile.name}!")
                                 
             # pay rent
             elif tile.owner != player_no:
@@ -48,18 +54,36 @@ class Game:
                 
                 # TODO: check for double rent (see TODO)
                 if self.board.owns_full_colour_set(paid_player, tile.colour): 
+                    print(f"{paid_player.name}")
                     rent*=2
                 
-            
+                # players pay each other
+                paid_player.change_money(rent)
+                player.change_money(-rent)
+                print(f"{paid_player.name} + {rent} -> {paid_player.money}")
+                print(f"{player.name} - {rent} -> {player.money}")
+
             # TODO: check bankruptcy for player
             if player.is_bankrupt():
+                print("Someone's a broke boy")
                 break
 
             # increment turn counter
             turn_count += 1
+            print(player)
+            input("Turn done: ")
 
         # TODO: Finish simulation
         print("game end")
+        print("============================== RESULTS =============================")
+        winning_money = -1
+        winners = []
+        for i in self.board.players:
+            if i.money >= winning_money:
+                winners.append(i)
+        
+        print(f"WINNERS: {winners}")
+            
     
 if __name__ == "__main__":
     try:
