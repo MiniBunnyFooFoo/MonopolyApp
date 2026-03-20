@@ -68,7 +68,6 @@ with st.sidebar:
     st.markdown("### 📋 Players")
  
     snap = snapshots[st.session_state.step]
-    st.warning(snap)
 
     try:
         player_count = len(snap["players"])
@@ -84,4 +83,13 @@ with st.sidebar:
             unsafe_allow_html=True,
         )
 
-st.warning(snap)
+# ─── Board ──────────────────────────────────────────────────────────────────
+st.markdown("## 🎲 Monopoly Replay")
+ 
+board_col, info_col = st.columns([3, 2])
+
+with board_col:
+    st.markdown(
+        render_board(snap["tiles"], snap["players"]),
+        unsafe_allow_html=True
+    )

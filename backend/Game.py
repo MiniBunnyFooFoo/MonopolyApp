@@ -130,20 +130,3 @@ class Game:
         
         return snapshots
     
-if __name__ == "__main__":
-    try:
-        data1 = load_jsons("rolls_1")
-        data2 = load_jsons("rolls_2")
-                        
-    except FileNotFoundError:
-        print("File not found")
-    except json.JSONDecodeError:
-        print("Failed to decode JSON: {e}")
-
-    game = Game()
-    
-    # Rolls 1
-    game.run(data1)
-    
-    # Rolls 2
-    game.run(data2)

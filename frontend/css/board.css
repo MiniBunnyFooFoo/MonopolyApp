@@ -1,0 +1,153 @@
+/* ── Fonts ─────────────────────────────────────────────────────────────────── */
+ 
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Mono:wght@400;500&display=swap');
+ 
+/* ── Board wrapper ─────────────────────────────────────────────────────────── */
+ 
+.board-wrapper {
+    background: #1a1f2e;
+    border-radius: 16px;
+    padding: 28px 24px 20px;
+    font-family: 'DM Mono', monospace;
+}
+ 
+.board-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: #d4af37;
+    text-align: center;
+    margin: 0 0 20px;
+    text-transform: uppercase;
+}
+ 
+/* ── Board track ───────────────────────────────────────────────────────────── */
+ 
+.board-track {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+    align-items: stretch;
+}
+ 
+/* ── Tile ──────────────────────────────────────────────────────────────────── */
+ 
+.tile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #242938;
+    border: 0.5px solid #3a3f52;
+    border-radius: 8px;
+    width: 68px;
+    min-height: 110px;
+    padding: 0 0 10px;
+    position: relative;
+    flex-shrink: 0;
+}
+ 
+/* ── Colour bands ──────────────────────────────────────────────────────────── */
+ 
+.tile-colour-band {
+    width: 100%;
+    height: 12px;
+    border-radius: 8px 8px 0 0;
+    flex-shrink: 0;
+    margin-bottom: 8px;
+}
+ 
+.tile.go    .tile-colour-band { background: #d4af37; }
+.tile.brown .tile-colour-band { background: #7B3F00; }
+.tile.red   .tile-colour-band { background: #C0392B; }
+.tile.green .tile-colour-band { background: #1e6b3a; }
+.tile.blue  .tile-colour-band { background: #1a4f8a; }
+ 
+/* ── Tile text ─────────────────────────────────────────────────────────────── */
+ 
+.tile-name {
+    font-size: 9px;
+    font-weight: 500;
+    color: #c8ccd8;
+    text-align: center;
+    line-height: 1.35;
+    padding: 0 5px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+ 
+.tile.go .tile-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    color: #d4af37;
+}
+ 
+.tile-price {
+    font-size: 9px;
+    color: #6b7280;
+    margin-top: 5px;
+}
+ 
+/* ── Tokens (players standing on tile) ────────────────────────────────────── */
+ 
+.tile-tokens {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 16px;
+    margin-top: 4px;
+    padding: 0 4px;
+}
+ 
+.token {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1.5px solid #1a1f2e;
+    flex-shrink: 0;
+}
+ 
+/* ── Owner dot (small dot when a player owns the tile) ────────────────────── */
+ 
+.owner-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    position: absolute;
+    top: 17px;
+    right: 6px;
+}
+ 
+/* ── Player colours ────────────────────────────────────────────────────────── */
+ 
+.token.p0,  .owner-dot.p0, .legend-token.p0 { background: #E63946; }
+.token.p1,  .owner-dot.p1, .legend-token.p1 { background: #2196F3; }
+.token.p2,  .owner-dot.p2, .legend-token.p2 { background: #4CAF50; }
+.token.p3,  .owner-dot.p3, .legend-token.p3 { background: #FF9800; }
+ 
+/* ── Legend ────────────────────────────────────────────────────────────────── */
+ 
+.board-legend {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 18px;
+    flex-wrap: wrap;
+}
+ 
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: #8b909e;
+    font-family: 'DM Mono', monospace;
+}
+ 
+.legend-token {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}

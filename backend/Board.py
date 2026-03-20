@@ -1,6 +1,6 @@
-from Player import Player
-from Tile import Tile
-from utils import load_jsons
+from backend.Player import Player
+from backend.Tile import Tile
+from backend.utils import load_jsons
 import json
 
 class Board: 
@@ -9,7 +9,7 @@ class Board:
         players = ["Peter", "Billy", "Charlotte", "Sweedal"]
         self.players = [Player(name) for name in players]
         
-        # Load board tiles from json
+        # Load board tiles from json       
         self.tiles = []
         try:
 
@@ -34,8 +34,3 @@ class Board:
             if property.colour == colour: p_count += 1
             
         return p_count == 2
-
-if __name__ == "__main__":
-    board = Board()
-    print([player for player in board.players])
-    print([tile for tile in board.tiles])
