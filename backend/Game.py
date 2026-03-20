@@ -38,7 +38,7 @@ class Game:
             tile.reset()
         
         snapshots = []
-        snapshots.append("Game started!")
+        snapshots.append(self._snapshot(f"Game started!"))
 
         board_len = len(self.board.tiles)
         player_count = len(self.board.players)

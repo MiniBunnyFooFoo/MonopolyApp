@@ -28,7 +28,60 @@ if not rolls_data:
     st.error("No dice roll JSON files found.")
     st.stop()
     
-snapshots = get_snapshots(0, rolls_data['Game 1'])
+# ─── Sidebar ──────────────────────────────────────────────────────────────────
+with st.sidebar:
+    st.markdown("### 🎮 Controls")
+ 
+    game_choice = st.selectbox("Select game", list(rolls_data.keys()))
+    snapshots = get_snapshots(game_choice, rolls_data[game_choice])
+ 
+    # Reset step counter when game changes
+    if "step" not in st.session_state or st.session_state.get("game") != game_choice:
+        st.session_state.step = 0
+        st.session_state.game = game_choice
+ 
+    step  = st.session_state.step
+    total = len(snapshots)
+ 
+    st.progress(step / max(total - 1, 1))
+    st.caption(f"Turn {step} of {total - 1}")
+ 
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        if st.button("⏮"):
+            st.session_state.step = 0
+            st.rerun()
+    with col2:
+        if st.button("◀") and step > 0:
+            st.session_state.step -= 1
+            st.rerun()
+    with col3:
+        if st.button("▶") and step < total - 1:
+            st.session_state.step += 1
+            st.rerun()
+    with col4:
+        if st.button("⏭"):
+            st.session_state.step = total - 1
+            st.rerun()
+ 
+    st.markdown("---")
+    st.markdown("### 📋 Players")
+ 
+    snap = snapshots[st.session_state.step]
+    st.warning(snap)
 
-st.warning(f"SNAPSHOTS: {snapshots}")
+    try:
+        player_count = len(snap["players"])
+    
+    except TypeError:
+        player_count = 4
+    
+    current_player = max(0, (st.session_state.step - 1)) % player_count
+ 
+    for idx, player in enumerate(snap["players"]):
+        st.markdown(
+            render_player_card(player, idx, idx == current_player),
+            unsafe_allow_html=True,
+        )
 
+st.warning(snap)
