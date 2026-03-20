@@ -1,5 +1,6 @@
 from Player import Player
 from Tile import Tile
+from utils import load_jsons
 import json
 
 class Board: 
@@ -11,8 +12,8 @@ class Board:
         # Load board tiles from json
         self.tiles = []
         try:
-            with open("jsons/board.json", "r") as file:
-                data = json.load(file)
+
+            data = load_jsons("board")
             
             for i in data:
                 name = i['name']

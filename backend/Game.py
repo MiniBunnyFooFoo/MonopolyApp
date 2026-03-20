@@ -1,4 +1,5 @@
 from Board import Board
+from utils import load_jsons
 import json
 
 class Game:
@@ -104,11 +105,8 @@ class Game:
     
 if __name__ == "__main__":
     try:
-        with open("jsons/rolls_1.json", "r") as file:
-            data1 = json.load(file)
-
-        with open("jsons/rolls_2.json", "r") as file1:
-            data2 = json.load(file1)
+        data1 = load_jsons("rolls_1")
+        data2 = load_jsons("rolls_2")
                         
     except FileNotFoundError:
         print("File not found")
@@ -120,5 +118,5 @@ if __name__ == "__main__":
     # Rolls 1
     game.run(data1)
     
-    # # Rolls 2
+    # Rolls 2
     game.run(data2)
