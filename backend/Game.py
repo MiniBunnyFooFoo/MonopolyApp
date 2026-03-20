@@ -1,10 +1,33 @@
-from Board import Board
-from utils import load_jsons
+from backend.Board import Board
+from backend.utils import load_jsons
 import json
 
 class Game:
     def __init__(self):
         self.board = Board()
+    
+    def _snapshot(self, log, extra=None):
+        players = []
+        for p in self.board.players:
+            players.append({
+                "name": p.name,
+                "money": p.money,
+                "position": p.position,
+                "properties": [t.name for t in p.properties],
+            })
+        tiles = []
+        for t in self.board.tiles:
+            tiles.append({
+                "name": t.name,
+                "colour": t.colour,
+                "price": t.price,
+                "type": t.type,
+                "owner": t.owner,
+            })
+        snap = {"players": players, "tiles": tiles, "log": log}
+        if extra:
+            snap.update(extra)
+        return snap
     
     def run(self, dice_rolls):
         # Reset the board and players
@@ -14,17 +37,19 @@ class Game:
         for tile in self.board.tiles:
             tile.reset()
         
-        print(self.board.players)
+        snapshots = []
+        snapshots.append("Game started!")
 
         board_len = len(self.board.tiles)
         player_count = len(self.board.players)
         turn_count = 0
+        
         for roll in dice_rolls:
             player_no = turn_count % player_count
             
             # set player's turn
             player = self.board.players[player_no]
-            print(f"\nPlayer {player_no}: {player.name}, rolled: {roll}")
+            log_lines = [f"🎲 **{player.name}** rolled a **{roll}**"]
             
             # increment player's position
             player.position += roll
@@ -33,16 +58,18 @@ class Game:
             if player.position >= board_len:
                 player.change_money(1)      
                 player.position %= board_len
-                print(f"{player.name} + 1 -> {player.money}")
+                log_lines.append(f"⭐ {player.name} passed GO! +$1 → ${player.money}")
                 
             
             # buy property or pay rent
             tile = self.board.tiles[player.position]
-            print(tile)
+            log_lines.append(f"📍 Landed on **{tile.name}**")
 
             
             # Check for GO
             if tile.type == "go":
+                snapshots.append(self._snapshot("\n".join(log_lines)))
+                turn_count += 1
                 continue
 
             
@@ -52,7 +79,7 @@ class Game:
                 player.properties.append(tile)
                 price = tile.price
                 player.change_money(-price)
-                print(f"{player.name} bought {tile.name}!")
+                log_lines.append(f"🏠 {player.name} bought **{tile.name}** for ${tile.price} → ${player.money}")
                                 
             # pay rent
             elif tile.owner != player_no:
@@ -63,29 +90,26 @@ class Game:
                 
                 # check for double rent
                 if self.board.owns_full_colour_set(paid_player, tile.colour): 
-                    print(f"{paid_player.name}")
+                    log_lines.append(f"🎯 Double rent! {paid_player.name} owns the full set.")
                     rent*=2
                 
                 # players pay each other
                 paid_player.change_money(rent)
                 player.change_money(-rent)
-                print(f"{paid_player.name} + {rent} -> {paid_player.money}")
-                print(f"{player.name} - {rent} -> {player.money}")
+                log_lines.append(f"💸 {player.name} paid ${rent} rent to {paid_player.name}")
+
+            snapshots.append(self._snapshot("\n".join(log_lines)))
 
             # check bankruptcy for player
             if player.is_bankrupt():
-                print("Someone's a broke boy")
+                snapshots[-1]["log"] += f"\n💀 **{player.name} is bankrupt!** Game over."
                 break
 
             # increment turn counter
             turn_count += 1
-            print(player)
-            # input("Turn done: ")
+            
 
-        # Finish simulation
-        print("game end")
-        print("============================== RESULTS =============================")
-        
+        # Finish simulation       
         winning_money = 0
         winner_id = ""
 
@@ -99,9 +123,12 @@ class Game:
                 winning_money = money
                 winner_id = i.name
         
-        print(f"WINNER: {winner_id} with a net worth of {winning_money}")
-        print(f"\nOther Players\n{self.board.players}")
-            
+        snapshots.append(self._snapshot(
+            f"🏆 **GAME OVER** — **{winner_id}** wins with a net worth of **${winning_money}**!",
+            {"game_over": True, "winner": winner_id}
+        ))
+        
+        return snapshots
     
 if __name__ == "__main__":
     try:

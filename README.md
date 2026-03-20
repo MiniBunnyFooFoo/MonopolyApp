@@ -1,11 +1,9 @@
 ## Time allocation
 
-- 2 days planning
-    - 1 back end plan
-    - 1 day front end plan
-- 2-4 days back end implementation
-- 2-4 days front end implementation
-
+- 16th: planning back end
+- 17th - 19th: implementing back end
+- 20th: planning front end
+- 20th - 22nd: implementing front end
 ## Back end plan
 I planned to use a class based system for the backend as that was the most intuitive approach I could think of to create a simulation engine for the monopoly game. 
 
