@@ -1,9 +1,13 @@
 import os
-import json
 
-BASE_DIR = os.path.dirname(__file__)  # resolves to backend/
+BASE_DIR = os.path.dirname(__file__)
 
-def load_jsons(filename):
-    with open(os.path.join(BASE_DIR, f"jsons/{filename}.json")) as f:
-        data = json.load(f)
-        return data
+def load_html(filename):
+    path = os.path.join(BASE_DIR, "html", filename)
+    with open(path) as f:
+        return f.read()
+    
+def load_css(filename):
+    path = os.path.join(BASE_DIR, "css", filename)
+    with open(path) as f:
+        return f"<style>{f.read()}</style>"
