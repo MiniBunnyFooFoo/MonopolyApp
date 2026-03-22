@@ -65,4 +65,4 @@ def render_player_card(player, idx, is_current):
 
 def render_log(log_text):
     t = load_html("log_box.html")
-    return t.replace()
+    return t.replace("{log}", log_text)

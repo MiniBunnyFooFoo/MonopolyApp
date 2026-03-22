@@ -151,3 +151,6 @@
     height: 12px;
     border-radius: 50%;
 }
+
+.muted  { color: #6b7280; }
+.accent { color: #d4af37; }

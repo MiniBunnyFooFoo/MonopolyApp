@@ -87,3 +87,19 @@ board_col, info_col = st.columns([3, 2])
 
 with board_col:
     st.html(render_board(snap["tiles"], snap["players"]))
+    
+with info_col:
+    st.markdown("#### 📜 Event Log")
+    st.markdown(render_log(snap["log"]), unsafe_allow_html=True)
+ 
+    if snap.get("game_over"):
+        st.success(f"🏆 {snap.get('winner')} wins!")
+ 
+    st.markdown("#### 🏠 Property Ownership")
+    owned = [(t["name"], t["owner"]) for t in snap["tiles"] if t["owner"] is not None]
+    if owned:
+        for tile_name, owner_id in owned:
+            owner_name = snap["players"][owner_id]["name"]
+            st.caption(f"{tile_name} → {owner_name}")
+    else:
+        st.caption("No properties owned yet")
