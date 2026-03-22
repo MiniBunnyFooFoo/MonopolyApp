@@ -22,13 +22,17 @@ python -m streamlit run App.py
 ```
 
 # Planning
-Disclaimer: Some methods and variables may not match in the UML diagrams as I did not update the UML as I developed the application
+**Disclaimer:** Some methods and variables may not match in the UML diagrams as I did not update the UML as I developed the application
 ## Time allocation
-
 - 16th: planning back end
 - 17th - 19th: implementing back end
 - 20th: planning front end
 - 20th - 22nd: implementing and deploying front end
+
+## Testing method
+Iteration testing before committing each feature to make sure that only working code was pushed to the repository. This would minimise hassle at the end and ensure a relatively smooth development process. 
+
+Mostly black box testing methods were used as I already knew the code structure and mostly preferred to test from an end-user's perspective, especially when I was about to deploy.
 ## Back end design
 I planned to use a class based system for the backend as that was the most intuitive approach I could think of to create a simulation engine for the monopoly game. 
 
