@@ -38,9 +38,9 @@ def _render_tile(tile, players, tile_idx):
         if p["position"] == tile_idx
     )
  
-    template = load_html("tile.html")
+    t = load_html("tile.html")
 
-    return (template
+    return (t
             .replace("{colour_class}", colour_class)
             .replace("{owner_dot}", owner_dot)
             .replace("{name}", tile["name"])
@@ -48,9 +48,21 @@ def _render_tile(tile, players, tile_idx):
             .replace("{tokens}", tokens)
         )
 def render_player_card(player, idx, is_current):
+    active_class = "active" if is_current else ""
+ 
+    properties = "".join(
+        f'<span class="property-pill">{p}</span>'
+        for p in player["properties"]
+    ) or '<span class="muted">no properties</span>'
+    
     t = load_html("player_card.html")
-    return t.format()
+    return (t
+        .replace("{active_class}", active_class)
+        .replace("{name}", player["name"])
+        .replace("{money}", str(player["money"]))
+        .replace("{properties}", properties)
+    )
 
 def render_log(log_text):
     t = load_html("log_box.html")
-    return t.format()
+    return t.replace("{log}", log_text)

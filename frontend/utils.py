@@ -10,4 +10,4 @@ def load_html(filename):
 def load_css(filename):
     path = os.path.join(BASE_DIR, "css", filename)
     with open(path) as f:
-        return f"<style>{f.read()}</style>"
+        return f.read()

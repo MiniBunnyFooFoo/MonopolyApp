@@ -78,10 +78,7 @@ with st.sidebar:
     current_player = max(0, (st.session_state.step - 1)) % player_count
  
     for idx, player in enumerate(snap["players"]):
-        st.markdown(
-            render_player_card(player, idx, idx == current_player),
-            unsafe_allow_html=True,
-        )
+        st.html(render_player_card(player, idx, idx == current_player))
 
 # ─── Board ──────────────────────────────────────────────────────────────────
 st.markdown("## 🎲 Monopoly Replay")
@@ -89,7 +86,20 @@ st.markdown("## 🎲 Monopoly Replay")
 board_col, info_col = st.columns([3, 2])
 
 with board_col:
-    st.markdown(
-        render_board(snap["tiles"], snap["players"]),
-        unsafe_allow_html=True
-    )
+    st.html(render_board(snap["tiles"], snap["players"]))
+    
+with info_col:
+    st.markdown("#### 📜 Event Log")
+    st.markdown(render_log(snap["log"]), unsafe_allow_html=True)
+ 
+    if snap.get("game_over"):
+        st.success(f"🏆 {snap.get('winner')} wins!")
+ 
+    st.markdown("#### 🏠 Property Ownership")
+    owned = [(t["name"], t["owner"]) for t in snap["tiles"] if t["owner"] is not None]
+    if owned:
+        for tile_name, owner_id in owned:
+            owner_name = snap["players"][owner_id]["name"]
+            st.caption(f"{tile_name} → {owner_name}")
+    else:
+        st.caption("No properties owned yet")
